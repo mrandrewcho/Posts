@@ -1,0 +1,11 @@
+Best Books of 2017
+
+DATE
+
+When I was a child, I used to be the biggest bookworm. My favorite days would be when my mother would take me to the library, and I'd come home with an enormous stack of books. I still remember hugging them on my lap all the way home in the car, and sitting in the corner of the couch for hours getting lost in new worlds and experiences. In high school & college, for one reason or another, I found myself leaving less and less time for personal reading. Since I've started a full time job though, I've been able to find time to read while commuting, when relaxing after dinner, and before sleeping. In 2017, I was able to finish a number of books, and I'm excited to really start my book collection seriously in 2018. 
+
+To spearhead this, I've compiled a "Best Books of 2017" list from several sources (Amazon, Barack Obama, BBC, The New York TImes, The Washington Post) to prioritize my reading list. 
+
+Process:
+1. Collect data from each source (Title, Author, Type (Fiction/Nonfiction))
+2. Produce descriptive statistics/data visualizations with Python/Pandas
