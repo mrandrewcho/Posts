@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 from datetime import datetime
+from scipy import stats
 
 #Kendall Jenner, Blake Griffin; August 2017 - February 2018; 
 #Tristan Thompson, Khloe Kardashian; July 2016 - February 19, 2019
@@ -101,6 +102,7 @@ kh_stats_weekly = kh_stats.resample('W').mean()
 kh_stats_weekly['rolling_GmSc'] = kh_stats_weekly['GmSc'].rolling( window=2).mean()
 
 #%%
+#Blake Griffin Graph
 trace1 = go.Scatter(
     x = bg_stats_weekly.index,
     y = bg_stats_weekly['rolling_GmSc'],
@@ -108,7 +110,7 @@ trace1 = go.Scatter(
 )
 
 layout = go.Layout(
-    title="Blake Griffin 2 Week Roling Game Scores", 
+    title="Blake Griffin 2 Week Rolling Game Scores", 
     xaxis={'title':'Date'}, 
     yaxis={'title':'Weekly Mean Game Score'},
     shapes=[
@@ -166,5 +168,345 @@ layout = go.Layout(
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
+
+#%%
+#mean game score during dating and outside of dating
+bg_stats_no_curse = bg_stats[(bg_stats.index > '2018-02-01') | (bg_stats.index < '2017-08-01')]
+bg_stats_curse = bg_stats[(bg_stats.index >= '2017-08-01') & (bg_stats.index <= '2018-02-01')]
+print('No Curse', bg_stats_no_curse.describe())
+print('Curse', bg_stats_curse.describe())
+
+#%%
+#t-test
+bg_stats_no_curse_no_null = bg_stats_no_curse[bg_stats_no_curse.GmSc.notnull()]
+bg_stats_curse_no_null = bg_stats_curse[bg_stats_curse.GmSc.notnull()]
+stats.ttest_ind(bg_stats_no_curse_no_null.GmSc, bg_stats_curse_no_null.GmSc)
+
+#%%
+#Tristan Thompson Graph
+trace1 = go.Scatter(
+    x = tt_stats_weekly.index,
+    y = tt_stats_weekly['rolling_GmSc'],
+    name='Tristan Thompson'
+)
+
+layout = go.Layout(
+    title="Tristan Thompson 2 Week Rolling Game Scores", 
+    xaxis={'title':'Date'}, 
+    yaxis={'title':'Weekly Mean Game Score'},
+    shapes=[
+        # Khloe
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2016-07-01', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2016-07-02', '%Y-%m-%d'),
+            'y1': 20,
+            'line': {
+                'color': 'green',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        },
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2019-02-19', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2019-02-20', '%Y-%m-%d'),
+            'y1': 20,
+            'line': {
+                'color': 'green',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        }
+    ],
+    annotations=[
+        dict(
+            x=datetime.strptime('2017-11-01', '%Y-%m-%d'),
+            y=22,
+            xref='x',
+            yref='y',
+            text='Khloe Kardashian',
+            showarrow=False,
+            arrowhead=7,
+            ax=0,
+            ay=-40
+        )
+    ],
+    autosize=False,
+    width=600,
+    height=400,
+    margin=go.layout.Margin(
+        l=50,
+        r=50,
+        b=50,
+        t=50,
+        pad=4
+    )
+)
+fig = go.Figure(data=[trace1], layout=layout)
+iplot(fig, filename='time-series-simple')
+
+#%%
+#mean game score during dating and outside of dating
+tt_stats_no_curse = tt_stats[(tt_stats.index > '2019-02-19') | (tt_stats.index < '2016-07-01')]
+tt_stats_curse = tt_stats[(tt_stats.index >= '2017-07-01') & (tt_stats.index <= '2019-02-19')]
+print('No Curse', tt_stats_no_curse.describe())
+print('Curse', tt_stats_curse.describe())
+
+#%%
+#t-test
+tt_stats_no_curse_no_null = tt_stats_no_curse[tt_stats_no_curse.GmSc.notnull()]
+tt_stats_curse_no_null = tt_stats_curse[tt_stats_curse.GmSc.notnull()]
+stats.ttest_ind(tt_stats_no_curse_no_null.GmSc, tt_stats_curse_no_null.GmSc)
+
+
+#%%
+#Ben Simmons Graph
+trace1 = go.Scatter(
+    x = bs_stats_weekly.index,
+    y = bs_stats_weekly['rolling_GmSc'],
+    name='Ben Simmons'
+)
+
+layout = go.Layout(
+    title="Ben Simmons 2 Week Rolling Game Scores", 
+    xaxis={'title':'Date'}, 
+    yaxis={'title':'Weekly Mean Game Score'},
+    shapes=[
+        # Kendall Jenner
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2018-06-12', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2018-06-13', '%Y-%m-%d'),
+            'y1': 25,
+            'line': {
+                'color': 'red',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        },
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2019-05-22', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2019-05-23', '%Y-%m-%d'),
+            'y1': 25,
+            'line': {
+                'color': 'red',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        }
+    ],
+    annotations=[
+        dict(
+            x=datetime.strptime('2018-12-01', '%Y-%m-%d'),
+            y=27,
+            xref='x',
+            yref='y',
+            text='Kendall Jenner',
+            showarrow=False,
+            arrowhead=7,
+            ax=0,
+            ay=-40
+        )
+    ],
+    autosize=False,
+    width=600,
+    height=400,
+    margin=go.layout.Margin(
+        l=50,
+        r=50,
+        b=50,
+        t=50,
+        pad=4
+    )
+)
+fig = go.Figure(data=[trace1], layout=layout)
+iplot(fig, filename='time-series-simple')
+
+#%%
+#mean game score during dating and outside of dating
+bs_stats_no_curse = bs_stats[(bs_stats.index > '2019-05-22') | (bs_stats.index < '2018-06-12')]
+bs_stats_curse = bs_stats[(bs_stats.index >= '2018-06-12') & (bs_stats.index <= '2019-05-22')]
+print('No Curse', bs_stats_no_curse.describe())
+print('Curse', bs_stats_curse.describe())
+
+#%%
+#t-test
+bs_stats_no_curse_no_null = bs_stats_no_curse[bs_stats_no_curse.GmSc.notnull()]
+bs_stats_curse_no_null = bs_stats_curse[bs_stats_curse.GmSc.notnull()]
+stats.ttest_ind(bs_stats_no_curse_no_null.GmSc, bs_stats_curse_no_null.GmSc)
+
+#%%
+#Lamar Odom Graph
+trace1 = go.Scatter(
+    x = lo_stats_weekly.index,
+    y = lo_stats_weekly['rolling_GmSc'],
+    name='Lamar Odom'
+)
+
+layout = go.Layout(
+    title="Lamar Odom 2 Week Rolling Game Scores", 
+    xaxis={'title':'Date'}, 
+    yaxis={'title':'Weekly Mean Game Score'},
+    shapes=[
+        # Khloe Kardashian
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2009-08-01', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2009-08-02', '%Y-%m-%d'),
+            'y1': 20,
+            'line': {
+                'color': 'green',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        },
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2013-12-13', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2013-12-14', '%Y-%m-%d'),
+            'y1': 20,
+            'line': {
+                'color': 'green',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        }
+    ],
+    annotations=[
+        dict(
+            x=datetime.strptime('2011-11-01', '%Y-%m-%d'),
+            y=22,
+            xref='x',
+            yref='y',
+            text='Khloe Kardashian',
+            showarrow=False,
+            arrowhead=7,
+            ax=0,
+            ay=-40
+        )
+    ],
+    autosize=False,
+    width=600,
+    height=400,
+    margin=go.layout.Margin(
+        l=50,
+        r=50,
+        b=50,
+        t=50,
+        pad=4
+    )
+)
+fig = go.Figure(data=[trace1], layout=layout)
+iplot(fig, filename='time-series-simple')
+
+#%%
+#mean game score during dating and outside of dating
+lo_stats_no_curse = lo_stats[(lo_stats.index > '2013-12-13') | (lo_stats.index < '2009-08-01')]
+lo_stats_curse = lo_stats[(lo_stats.index >= '2009-08-01') & (lo_stats.index <= '2013-12-13')]
+print('No Curse', lo_stats_no_curse.describe())
+print('Curse', lo_stats_curse.describe())
+
+#%%
+#t-test
+lo_stats_no_curse_no_null = lo_stats_no_curse[lo_stats_no_curse.GmSc.notnull()]
+lo_stats_curse_no_null = lo_stats_curse[lo_stats_curse.GmSc.notnull()]
+stats.ttest_ind(lo_stats_no_curse_no_null.GmSc, lo_stats_curse_no_null.GmSc)
+
+
+#%%
+#Kris Humphries; November 2010 - November 2011
+#Kris Humphries Graph
+trace1 = go.Scatter(
+    x = kh_stats_weekly.index,
+    y = kh_stats_weekly['rolling_GmSc'],
+    name='Kris Humphries'
+)
+
+layout = go.Layout(
+    title="Kris Humphries 2 Week Rolling Game Scores", 
+    xaxis={'title':'Date'}, 
+    yaxis={'title':'Weekly Mean Game Score'},
+    shapes=[
+        # Kim Kardashian
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2010-11-01', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2010-11-02', '%Y-%m-%d'),
+            'y1': 20,
+            'line': {
+                'color': 'orange',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        },
+        {
+            'type': 'line',
+            'x0': datetime.strptime('2011-11-01', '%Y-%m-%d'),
+            'y0': 0,
+            'x1': datetime.strptime('2011-11-02', '%Y-%m-%d'),
+            'y1': 20,
+            'line': {
+                'color': 'orange',
+                'width': 3,
+                'dash': 'dashdot'
+            },
+            'layer': 'below'
+        }
+    ],
+    annotations=[
+        dict(
+            x=datetime.strptime('2011-06-01', '%Y-%m-%d'),
+            y=22,
+            xref='x',
+            yref='y',
+            text='Kim Kardashian',
+            showarrow=False,
+            arrowhead=7,
+            ax=0,
+            ay=-40
+        )
+    ],
+    autosize=False,
+    width=600,
+    height=400,
+    margin=go.layout.Margin(
+        l=50,
+        r=50,
+        b=50,
+        t=50,
+        pad=4
+    )
+)
+fig = go.Figure(data=[trace1], layout=layout)
+iplot(fig, filename='time-series-simple')
+
+#%%
+#mean game score during dating and outside of dating
+kh_stats_no_curse = kh_stats[(kh_stats.index > '2011-11-01') | (kh_stats.index < '2010-11-01')]
+kh_stats_curse = kh_stats[(kh_stats.index >= '2010-11-01') & (kh_stats.index <= '2011-11-01')]
+print('No Curse', kh_stats_no_curse.describe())
+print('Curse', kh_stats_curse.describe())
+
+#%%
+#t-test
+kh_stats_no_curse_no_null = kh_stats_no_curse[kh_stats_no_curse.GmSc.notnull()]
+kh_stats_curse_no_null = kh_stats_curse[kh_stats_curse.GmSc.notnull()]
+stats.ttest_ind(kh_stats_no_curse_no_null.GmSc, kh_stats_curse_no_null.GmSc)
 
 #%%
