@@ -15,20 +15,10 @@ from scipy import stats
 #Kris Humphries; November 2010 - November 2011
 #Game Score, PER
 
-
 #%%
-player_keys = ['griffbl01', 'thomptr01', 'simmobe01', 'odomla01', 'humphkr01']
+#functions
 
-#pull headers
-url = 'https://www.basketball-reference.com/players/g/griffbl01/gamelog/2017'
-#HTML from given URL
-html = urlopen(url)
-soup = BeautifulSoup(html)
-#extract text into list
-headers = [th.getText() for th in soup.findAll('thead')[0].findAll('tr')[0].findAll('th')]
-headers = headers[1:]
-
-#pull individual seasons for player
+#function to pull individual seasons for player
 def pull_gamelogs(player_key):
     year = 1999 #first year of Lamar Odom's career (oldest player)
     complete_stats = pd.DataFrame()
@@ -49,6 +39,18 @@ def pull_gamelogs(player_key):
             pass
         year+=1
     return complete_stats
+
+#%%
+player_keys = ['griffbl01', 'thomptr01', 'simmobe01', 'odomla01', 'humphkr01']
+
+#pull headers
+url = 'https://www.basketball-reference.com/players/g/griffbl01/gamelog/2017'
+#HTML from given URL
+html = urlopen(url)
+soup = BeautifulSoup(html)
+#extract text into list
+headers = [th.getText() for th in soup.findAll('thead')[0].findAll('tr')[0].findAll('th')]
+headers = headers[1:]
 
 #%%
 bg_stats = pull_gamelogs(player_keys[0])
@@ -106,13 +108,22 @@ kh_stats_weekly['rolling_GmSc'] = kh_stats_weekly['GmSc'].rolling( window=2).mea
 trace1 = go.Scatter(
     x = bg_stats_weekly.index,
     y = bg_stats_weekly['rolling_GmSc'],
-    name='Blake Griffin'
+    name='Blake Griffin',
+    line= {
+        "color": "rgb(245, 16, 0)",
+        "width": 2
+    },
 )
 
 layout = go.Layout(
-    title="Blake Griffin 2 Week Rolling Game Scores", 
+    font= {
+      "size": 12,
+      "color": "#444",
+      "family": "Muli, sans-serif"
+    },
+    title="<b>Blake Griffin</b><br>Mean Game Scores (Rolling 2 Week)", 
     xaxis={'title':'Date'}, 
-    yaxis={'title':'Weekly Mean Game Score'},
+    yaxis={'title':'Mean Game Score'},
     shapes=[
         # Kendall
         {
@@ -122,9 +133,9 @@ layout = go.Layout(
             'x1': datetime.strptime('2017-08-02', '%Y-%m-%d'),
             'y1': 30,
             'line': {
-                'color': 'red',
-                'width': 3,
-                'dash': 'dashdot'
+                'color': 'rgb(123, 123, 245)',
+                'width': 2,
+                'dash': 'dot'
             },
             'layer': 'below'
         },
@@ -135,9 +146,9 @@ layout = go.Layout(
             'x1': datetime.strptime('2018-02-02', '%Y-%m-%d'),
             'y1': 30,
             'line': {
-                'color': 'red',
-                'width': 3,
-                'dash': 'dashdot'
+                'color': 'rgb(123, 123, 245)',
+                'width': 2,
+                'dash': 'dot'
             },
             'layer': 'below'
         }
@@ -145,26 +156,37 @@ layout = go.Layout(
     annotations=[
         dict(
             x=datetime.strptime('2017-11-01', '%Y-%m-%d'),
-            y=32,
+            y=31,
             xref='x',
             yref='y',
             text='Kendall Jenner',
             showarrow=False,
             arrowhead=7,
             ax=0,
-            ay=-40
+            ay=-40,
+            font= {
+                "size": 14,
+                "color": 'rgb(123, 123, 245)',
+            },
         )
     ],
     autosize=False,
-    width=600,
-    height=400,
+    height=575,
+    bargap=0.2,
+    boxgap=0.3,
     margin=go.layout.Margin(
-        l=50,
-        r=50,
-        b=50,
-        t=50,
-        pad=4
-    )
+        l=80,
+        r=80,
+        b=80,
+        t=100,
+        pad=0,
+        autoexpand=True
+    ),
+    bargroupgap= 0,
+    boxgroupgap= 0.3,
+    hidesources= True,
+    plot_bgcolor= "rgb(240, 240, 240)",
+    paper_bgcolor= "rgb(240, 240, 240)"
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
@@ -187,13 +209,22 @@ stats.ttest_ind(bg_stats_no_curse_no_null.GmSc, bg_stats_curse_no_null.GmSc)
 trace1 = go.Scatter(
     x = tt_stats_weekly.index,
     y = tt_stats_weekly['rolling_GmSc'],
-    name='Tristan Thompson'
+    name='Tristan Thompson',
+    line= {
+        "color": "rgb(245, 16, 0)",
+        "width": 2
+    },
 )
 
 layout = go.Layout(
-    title="Tristan Thompson 2 Week Rolling Game Scores", 
+    font= {
+      "size": 12,
+      "color": "#444",
+      "family": "Muli, sans-serif"
+    },
+    title="<b>Tristan Thompson</b><br>Mean Game Scores (Rolling 2 Week)", 
     xaxis={'title':'Date'}, 
-    yaxis={'title':'Weekly Mean Game Score'},
+    yaxis={'title':'Mean Game Score'},
     shapes=[
         # Khloe
         {
@@ -203,9 +234,9 @@ layout = go.Layout(
             'x1': datetime.strptime('2016-07-02', '%Y-%m-%d'),
             'y1': 20,
             'line': {
-                'color': 'green',
+                'color': 'rgb(100, 220, 220)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         },
@@ -216,9 +247,9 @@ layout = go.Layout(
             'x1': datetime.strptime('2019-02-20', '%Y-%m-%d'),
             'y1': 20,
             'line': {
-                'color': 'green',
+                'color': 'rgb(100, 220, 220)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         }
@@ -226,26 +257,37 @@ layout = go.Layout(
     annotations=[
         dict(
             x=datetime.strptime('2017-11-01', '%Y-%m-%d'),
-            y=22,
+            y=21,
             xref='x',
             yref='y',
             text='Khloe Kardashian',
             showarrow=False,
             arrowhead=7,
             ax=0,
-            ay=-40
+            ay=-40,
+            font= {
+                "size": 14,
+                "color": 'rgb(100, 220, 220)',
+            },
         )
     ],
     autosize=False,
-    width=600,
-    height=400,
+    height=575,
+    bargap=0.2,
+    boxgap=0.3,
     margin=go.layout.Margin(
-        l=50,
-        r=50,
-        b=50,
-        t=50,
-        pad=4
-    )
+        l=80,
+        r=80,
+        b=80,
+        t=100,
+        pad=0,
+        autoexpand=True
+    ),
+    bargroupgap= 0,
+    boxgroupgap= 0.3,
+    hidesources= True,
+    plot_bgcolor= "rgb(240, 240, 240)",
+    paper_bgcolor= "rgb(240, 240, 240)"
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
@@ -263,31 +305,39 @@ tt_stats_no_curse_no_null = tt_stats_no_curse[tt_stats_no_curse.GmSc.notnull()]
 tt_stats_curse_no_null = tt_stats_curse[tt_stats_curse.GmSc.notnull()]
 stats.ttest_ind(tt_stats_no_curse_no_null.GmSc, tt_stats_curse_no_null.GmSc)
 
-
 #%%
 #Ben Simmons Graph
 trace1 = go.Scatter(
     x = bs_stats_weekly.index,
     y = bs_stats_weekly['rolling_GmSc'],
-    name='Ben Simmons'
+    name='Ben Simmons',
+    line= {
+        "color": "rgb(245, 16, 0)",
+        "width": 2
+    },
 )
 
 layout = go.Layout(
-    title="Ben Simmons 2 Week Rolling Game Scores", 
+    font= {
+      "size": 12,
+      "color": "#444",
+      "family": "Muli, sans-serif"
+    },
+    title="<b>Ben Simmons</b><br>Mean Game Scores (Rolling 2 Week)", 
     xaxis={'title':'Date'}, 
-    yaxis={'title':'Weekly Mean Game Score'},
+    yaxis={'title':'Mean Game Score'},
     shapes=[
-        # Kendall Jenner
+        # Kendall
         {
             'type': 'line',
             'x0': datetime.strptime('2018-06-12', '%Y-%m-%d'),
             'y0': 0,
             'x1': datetime.strptime('2018-06-13', '%Y-%m-%d'),
-            'y1': 25,
+            'y1': 20,
             'line': {
-                'color': 'red',
+                'color': 'rgb(123, 123, 245)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         },
@@ -296,11 +346,11 @@ layout = go.Layout(
             'x0': datetime.strptime('2019-05-22', '%Y-%m-%d'),
             'y0': 0,
             'x1': datetime.strptime('2019-05-23', '%Y-%m-%d'),
-            'y1': 25,
+            'y1': 20,
             'line': {
-                'color': 'red',
+                'color': 'rgb(123, 123, 245)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         }
@@ -308,26 +358,37 @@ layout = go.Layout(
     annotations=[
         dict(
             x=datetime.strptime('2018-12-01', '%Y-%m-%d'),
-            y=27,
+            y=22,
             xref='x',
             yref='y',
             text='Kendall Jenner',
             showarrow=False,
             arrowhead=7,
             ax=0,
-            ay=-40
+            ay=-40,
+            font= {
+                "size": 14,
+                "color": 'rgb(123, 123, 245)',
+            },
         )
     ],
     autosize=False,
-    width=600,
-    height=400,
+    height=575,
+    bargap=0.2,
+    boxgap=0.3,
     margin=go.layout.Margin(
-        l=50,
-        r=50,
-        b=50,
-        t=50,
-        pad=4
-    )
+        l=80,
+        r=80,
+        b=80,
+        t=100,
+        pad=0,
+        autoexpand=True
+    ),
+    bargroupgap= 0,
+    boxgroupgap= 0.3,
+    hidesources= True,
+    plot_bgcolor= "rgb(240, 240, 240)",
+    paper_bgcolor= "rgb(240, 240, 240)"
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
@@ -350,15 +411,24 @@ stats.ttest_ind(bs_stats_no_curse_no_null.GmSc, bs_stats_curse_no_null.GmSc)
 trace1 = go.Scatter(
     x = lo_stats_weekly.index,
     y = lo_stats_weekly['rolling_GmSc'],
-    name='Lamar Odom'
+    name='Lamar Odom',
+    line= {
+        "color": "rgb(245, 16, 0)",
+        "width": 2
+    },
 )
 
 layout = go.Layout(
-    title="Lamar Odom 2 Week Rolling Game Scores", 
+    font= {
+      "size": 12,
+      "color": "#444",
+      "family": "Muli, sans-serif"
+    },
+    title="<b>Lamar Odom</b><br>Mean Game Scores (Rolling 2 Week)", 
     xaxis={'title':'Date'}, 
-    yaxis={'title':'Weekly Mean Game Score'},
+    yaxis={'title':'Mean Game Score'},
     shapes=[
-        # Khloe Kardashian
+        # Khloe
         {
             'type': 'line',
             'x0': datetime.strptime('2009-08-01', '%Y-%m-%d'),
@@ -366,9 +436,9 @@ layout = go.Layout(
             'x1': datetime.strptime('2009-08-02', '%Y-%m-%d'),
             'y1': 20,
             'line': {
-                'color': 'green',
+                'color': 'rgb(100, 220, 220)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         },
@@ -379,9 +449,9 @@ layout = go.Layout(
             'x1': datetime.strptime('2013-12-14', '%Y-%m-%d'),
             'y1': 20,
             'line': {
-                'color': 'green',
+                'color': 'rgb(100, 220, 220)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         }
@@ -389,26 +459,37 @@ layout = go.Layout(
     annotations=[
         dict(
             x=datetime.strptime('2011-11-01', '%Y-%m-%d'),
-            y=22,
+            y=21,
             xref='x',
             yref='y',
             text='Khloe Kardashian',
             showarrow=False,
             arrowhead=7,
             ax=0,
-            ay=-40
+            ay=-40,
+            font= {
+                "size": 14,
+                "color": 'rgb(100, 220, 220)',
+            },
         )
     ],
     autosize=False,
-    width=600,
-    height=400,
+    height=575,
+    bargap=0.2,
+    boxgap=0.3,
     margin=go.layout.Margin(
-        l=50,
-        r=50,
-        b=50,
-        t=50,
-        pad=4
-    )
+        l=80,
+        r=80,
+        b=80,
+        t=100,
+        pad=0,
+        autoexpand=True
+    ),
+    bargroupgap= 0,
+    boxgroupgap= 0.3,
+    hidesources= True,
+    plot_bgcolor= "rgb(240, 240, 240)",
+    paper_bgcolor= "rgb(240, 240, 240)"
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
@@ -433,25 +514,34 @@ stats.ttest_ind(lo_stats_no_curse_no_null.GmSc, lo_stats_curse_no_null.GmSc)
 trace1 = go.Scatter(
     x = kh_stats_weekly.index,
     y = kh_stats_weekly['rolling_GmSc'],
-    name='Kris Humphries'
+    name='Kris Humphries',
+    line= {
+        "color": "rgb(245, 16, 0)",
+        "width": 2
+    },
 )
 
 layout = go.Layout(
-    title="Kris Humphries 2 Week Rolling Game Scores", 
+    font= {
+      "size": 12,
+      "color": "#444",
+      "family": "Muli, sans-serif"
+    },
+    title="<b>Kris Humphries</b><br>Mean Game Scores (Rolling 2 Week)", 
     xaxis={'title':'Date'}, 
-    yaxis={'title':'Weekly Mean Game Score'},
+    yaxis={'title':'Mean Game Score'},
     shapes=[
-        # Kim Kardashian
+        # Kim
         {
             'type': 'line',
             'x0': datetime.strptime('2010-11-01', '%Y-%m-%d'),
             'y0': 0,
             'x1': datetime.strptime('2010-11-02', '%Y-%m-%d'),
-            'y1': 20,
+            'y1': 16,
             'line': {
-                'color': 'orange',
+                'color': 'rgb(255, 178, 220)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         },
@@ -460,38 +550,49 @@ layout = go.Layout(
             'x0': datetime.strptime('2011-11-01', '%Y-%m-%d'),
             'y0': 0,
             'x1': datetime.strptime('2011-11-02', '%Y-%m-%d'),
-            'y1': 20,
+            'y1': 16,
             'line': {
-                'color': 'orange',
+                'color': 'rgb(255, 178, 220)',
                 'width': 3,
-                'dash': 'dashdot'
+                'dash': 'dot'
             },
             'layer': 'below'
         }
     ],
     annotations=[
         dict(
-            x=datetime.strptime('2011-06-01', '%Y-%m-%d'),
-            y=22,
+            x=datetime.strptime('2011-05-01', '%Y-%m-%d'),
+            y=17,
             xref='x',
             yref='y',
             text='Kim Kardashian',
             showarrow=False,
             arrowhead=7,
             ax=0,
-            ay=-40
+            ay=-40,
+            font= {
+                "size": 14,
+                "color": 'rgb(255, 178, 220)',
+            },
         )
     ],
     autosize=False,
-    width=600,
-    height=400,
+    height=575,
+    bargap=0.2,
+    boxgap=0.3,
     margin=go.layout.Margin(
-        l=50,
-        r=50,
-        b=50,
-        t=50,
-        pad=4
-    )
+        l=80,
+        r=80,
+        b=80,
+        t=100,
+        pad=0,
+        autoexpand=True
+    ),
+    bargroupgap= 0,
+    boxgroupgap= 0.3,
+    hidesources= True,
+    plot_bgcolor= "rgb(240, 240, 240)",
+    paper_bgcolor= "rgb(240, 240, 240)"
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
@@ -508,5 +609,8 @@ print('Curse', kh_stats_curse.describe())
 kh_stats_no_curse_no_null = kh_stats_no_curse[kh_stats_no_curse.GmSc.notnull()]
 kh_stats_curse_no_null = kh_stats_curse[kh_stats_curse.GmSc.notnull()]
 stats.ttest_ind(kh_stats_no_curse_no_null.GmSc, kh_stats_curse_no_null.GmSc)
+
+#%%
+
 
 #%%
