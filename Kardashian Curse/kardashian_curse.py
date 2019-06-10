@@ -12,7 +12,7 @@ from scipy import stats
 #Tristan Thompson, Khloe Kardashian; July 2016 - February 19, 2019
 #Ben Simmons, Kendall Jenner; June 12, 2018 - May 22, 2019
 #Lamar Odom, Khloe Kardashian; August 2009 - December 13, 2013
-#Kris Humphries; November 2010 - November 2011
+#Kris Humphries, Kim Kardashian; November 2010 - November 2011
 #Game Score, PER
 
 #%%
@@ -539,7 +539,7 @@ layout = go.Layout(
             'x1': datetime.strptime('2010-11-02', '%Y-%m-%d'),
             'y1': 16,
             'line': {
-                'color': 'rgb(255, 178, 220)',
+                'color': 'rgb(255, 148, 220)',
                 'width': 3,
                 'dash': 'dot'
             },
@@ -552,7 +552,7 @@ layout = go.Layout(
             'x1': datetime.strptime('2011-11-02', '%Y-%m-%d'),
             'y1': 16,
             'line': {
-                'color': 'rgb(255, 178, 220)',
+                'color': 'rgb(255, 148, 220)',
                 'width': 3,
                 'dash': 'dot'
             },
@@ -572,7 +572,7 @@ layout = go.Layout(
             ay=-40,
             font= {
                 "size": 14,
-                "color": 'rgb(255, 178, 220)',
+                "color": 'rgb(255, 148, 220)',
             },
         )
     ],
