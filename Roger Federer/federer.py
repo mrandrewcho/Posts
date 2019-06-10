@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 from fbprophet import Prophet
 from fbprophet.plot import plot_plotly
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+init_notebook_mode(connected=True)
 
 #%%
 #####
@@ -42,6 +43,7 @@ def plotly_df(df, title=''):
     )
     fig = dict(data=data, layout=layout)
     iplot(fig, show_link=False)
+    return plot(fig, include_plotlyjs=False, output_type='div')
 
 #join historical df to forecast df
 def make_comparison_dataframe(historical, forecast):
@@ -100,6 +102,7 @@ def show_forecast(cmp_df, num_predictions, num_values, title):
     layout = go.Layout(yaxis=dict(title='Posts'), title=title, showlegend = False, autosize=False)
     fig = go.Figure(data=data, layout=layout)
     iplot(fig, show_link=False)
+    return plot(fig, include_plotlyjs=False, output_type='div')
 
 #stabilize variance
 def inverse_boxcox(y, lambda_):
@@ -179,6 +182,7 @@ for err_name, err_value in calculate_forecast_errors(cmp_df, prediction_size).it
 #%%
 #visualize forecast
 show_forecast(cmp_df, prediction_size, 730, 'Roger Federer Page Views')
+
 
 #%%
 #visualize unlogged forecast
