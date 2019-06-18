@@ -99,7 +99,30 @@ def show_forecast(cmp_df, num_predictions, num_values, title):
     # In this case the order of the series is important because of the filling
     data = [lower_bound, upper_bound, forecast, actual]
 
-    layout = go.Layout(yaxis=dict(title='Posts'), title=title, showlegend = False, autosize=False)
+    layout = go.Layout(
+        font= {
+            'size': 12,
+            'color': '#444',
+            'family': 'Muli, sans-serif'
+        },
+        title='<b>%s</b><br>Wikipedia Page Views' % title, 
+        xaxis={'title':'Date'}, 
+        yaxis={'title':'Daily Page Views'},
+        autosize=False,
+        height=500,
+        margin=go.layout.Margin(
+            l=80,
+            r=80,
+            b=80,
+            t=100,
+            pad=0,
+            autoexpand=True
+        ),
+        plot_bgcolor= "rgb(240, 240, 240)",
+        paper_bgcolor= "rgb(240, 240, 240)",
+        showlegend=False
+    )
+
     fig = go.Figure(data=data, layout=layout)
     iplot(fig, show_link=False)
     return plot(fig, include_plotlyjs=False, output_type='div')
@@ -251,12 +274,12 @@ for err_name, err_value in calculate_forecast_errors(cmp_df1, prediction_size).i
 
 #%%
 #visualize forecast
-show_forecast(cmp_df1, prediction_size, 730, 'Roger Federer Page Views')
+show_forecast(cmp_df1, prediction_size, 730, 'Roger Federer')
 
 #%%
 #visualize unlogged forecast
 cmp_df1 = cmp_df1.apply(lambda x: np.exp(x))
-show_forecast(cmp_df1, prediction_size, 730, 'Roger Federer Page Views')
+show_forecast(cmp_df1, prediction_size, 730, 'Roger Federer')
 
 
 #%%
