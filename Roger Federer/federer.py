@@ -162,6 +162,7 @@ np.exp(forecast[['yhat', 'yhat_lower', 'yhat_upper']]) #unlog
 #%%
 #plot forecasted predictions
 fig = m.plot(forecast)
+fig.savefig('AndrewChoSite2.0/img/Predicting Roger Federers Wikipedia Page Views with Prophet/fig.png')
 
 #%%
 #plot components
@@ -169,6 +170,8 @@ fig2 = m.plot_components(forecast)
 #trend: goes up in 2017, and is slowly tailing off since then
 #weekly: highest sunday and monday
 #yearly: highest in January, July, September
+
+fig2.savefig('AndrewChoSite2.0/img/Predicting Roger Federers Wikipedia Page Views with Prophet/fig2.png')
 
 #%%
 cmp_df = make_comparison_dataframe(df_roger, forecast)
@@ -225,15 +228,21 @@ forecast1 = m1.fit(train_df_roger).predict(future)
 #%%
 #plot forecasted predictions
 fig = m1.plot(forecast1)
+fig.savefig('AndrewChoSite2.0/img/Predicting Roger Federers Wikipedia Page Views with Prophet/fig3.png')
 
 #%%
 #plot components
 fig2 = m1.plot_components(forecast1)
-#
+fig2.savefig('AndrewChoSite2.0/img/Predicting Roger Federers Wikipedia Page Views with Prophet/fig4.png')
 
 #%%
 cmp_df1 = make_comparison_dataframe(df_roger, forecast1)
 cmp_df1.tail()
+
+#%%
+#highest differences for forecasted period
+#cmp_df1['yhat_minus_y'] = np.abs(cmp_df1['yhat'] - cmp_df1['y'])
+#cmp_df1[-365:]['yhat_minus_y'].sort_values(ascending=False)
 
 #%%
 #calculate MAPE & MAE
@@ -251,46 +260,6 @@ show_forecast(cmp_df1, prediction_size, 730, 'Roger Federer Page Views')
 
 
 #%%
-#post:
-'''
-TDL:
-need to figure out how to embed plotly charts
-
-A couple of weeks ago, one of my coworker's introduced me to Prophet, and since then I've been meaning to mess around with the software to create some forecasts. While at my previous job, an enormous amount of effort went into creating time series regression models to forecast the effects that marketing would have on business KPI's, and to see a software that makes forecasting so much quicker and more accessible was really intriguing. 
-
-I finally got around to choosing some time series data I wanted to work with, which ended up being the daily number of page views for the wikipedia page of the greatest tennis player of all time. The data was easily obtained from https://tools.wmflabs.org/pageviews/?project=en.wikipedia.org&platform=all-access&agent=user&range=all-time&pages=Roger_Federer|Rafael_Nadal|Novak_Djokovic|Andy_Murray, and after some quick data manipulation, I plotted out the page views. 
-
-It's quickly apparent that the data has periods of low volume, and then has sudden large order of magnitude differences in short periods of extremely high volume. This makes a ton of sense, as the average tennis fan only really tunes in and thinks about Federer during the Grand Slams. To verify this, we can look at some of the high volume days:
-
-There's a little bit of leadup throughout the tournament, but it isn't until championship day that the volume goes crazy
-
-1/29/2017 - Roger vs. Rafa in the Australian Open Final; Federer's first grand slam since the 2012 Wimbledon title
-
-7/16/2017 - Roger Wimbledon championship
-
-1/28/2018 - Australian Open Championship
-
-Additionally, on the smaller spikes:
-
-9/14/2015 - day after federer lost to djokovic in the us open final
-
-6/10/2018 - day when Nadal won french open. Fed didn't play, but had Nadal performed poorly, he would have lost his #1 ranking to Federer
-
-1/27/2019 - Day of Australian Open Final, though he lost in fourth round. It looks like Fed always has a spiek on days of finals even if he doesn't win/show up in final/enter tournament
-
-Due to the multiplicative nature of the data, I took logs of the data to make it easier to model. I also split the data into training and testing sets for cross validation, with the testing data being the latest year of data availability. Plugging the training data into Prophet provided the following forecast and plot components. 
-
-The forecast seems to do a decent job at catching the lower volume points and inflection points, but misses by a significant margin of magnitude for the spikes. For the trend components, we can se that the trend goes up in 2017, and has been tailing off since, the days of the week with the highest volume are Sunday and Monday, and the yearly seasonality spikes during grand slams and larger ATP 1000 tournaments. When calculating the MAPE, we end up with 42.4%, which is way too high. 
-
-With our initial forecast out of the way, I modeled grand slams into the model as well using the holiday argument, and included the dates while instructing Prophet to include into the lookback and lookahead windows 14 days behind, and 2 days ahead. 
-
-This brings MAPE down to 33.6%, and the large spikes are fitting a lot more nicely. However, there are still a number of spikes that are not being fitted correctly by Prophet. A closer examination at these shows that these are other tournaments that Federer has won during this time period. 
-
-How to improve MAPES
--add regressors for clay court season as fed usually is more irrelevant
--add big tournaments that fed usually wins (this would kind of be covered by seasonality though, no?)
-
--maybe this is just difficult to predict :(
 
 
-'''
+#%%
