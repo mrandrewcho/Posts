@@ -134,7 +134,7 @@ layout = go.Layout(
             'y1': 30,
             'line': {
                 'color': 'rgb(123, 123, 245)',
-                'width': 2,
+                'width': 3,
                 'dash': 'dot'
             },
             'layer': 'below'
@@ -147,7 +147,7 @@ layout = go.Layout(
             'y1': 30,
             'line': {
                 'color': 'rgb(123, 123, 245)',
-                'width': 2,
+                'width': 3,
                 'dash': 'dot'
             },
             'layer': 'below'
@@ -190,6 +190,7 @@ layout = go.Layout(
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
+plot(fig, include_plotlyjs=False, output_type='div')
 
 #%%
 #mean game score during dating and outside of dating
@@ -291,6 +292,7 @@ layout = go.Layout(
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
+plot(fig, include_plotlyjs=False, output_type='div')
 
 #%%
 #mean game score during dating and outside of dating
@@ -392,6 +394,7 @@ layout = go.Layout(
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
+plot(fig, include_plotlyjs=False, output_type='div')
 
 #%%
 #mean game score during dating and outside of dating
@@ -493,6 +496,7 @@ layout = go.Layout(
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
+plot(fig, include_plotlyjs=False, output_type='div')
 
 #%%
 #mean game score during dating and outside of dating
@@ -596,6 +600,7 @@ layout = go.Layout(
 )
 fig = go.Figure(data=[trace1], layout=layout)
 iplot(fig, filename='time-series-simple')
+plot(fig, include_plotlyjs=False, output_type='div')
 
 #%%
 #mean game score during dating and outside of dating
